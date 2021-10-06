@@ -79,12 +79,10 @@ contract SupplyChain {
 
   modifier checkValue(uint _sku) {
     //refund them after pay for item (why it is before, _ checks for logic before func)
-    require(  msg.value > items[_sku].price , "buyer paid correct price");
+    _;
     uint _price = items[_sku].price;
     uint amountToRefund = msg.value - _price;
     items[_sku].buyer.transfer(amountToRefund);
-    _;
-    
   }
 
   // For each of the following modifiers, use what you learned about modifiers
@@ -180,14 +178,22 @@ contract SupplyChain {
   //    - check the value after the function is called to make 
   //      sure the buyer is refunded any excess ether sent. 
   // 6. call the event associated with this function!
-  function buyItem(uint sku) public payable forSale(sku) paidEnough(items[sku].price)   {
-    items[sku].seller.transfer(msg.value);
+  // function buyItem(uint sku) public payable forSale(sku) paidEnough(items[sku].price) checkValue(sku)   {
+  //   items[sku].seller.transfer(msg.value);
     
+  //   items[sku].buyer = msg.sender;
+    
+  //   items[sku].state = State.Sold;
+  //   emit LogSold(sku);
+  // } 
+
+  function buyItem(uint sku) public payable forSale(sku) paidEnough(items[sku].price) checkValue(sku) {
     items[sku].buyer = msg.sender;
-    
     items[sku].state = State.Sold;
+    (bool sent, ) = items[sku].seller.call.value(items[sku].price)("");
+    require(sent, "The seller did not receive the ether.");
     emit LogSold(sku);
-  } 
+  }
 
   // 1. Add modifiers to check:
   //    - the item is sold already 
