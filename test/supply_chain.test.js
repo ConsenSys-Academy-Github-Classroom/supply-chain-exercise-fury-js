@@ -206,7 +206,7 @@ contract("SupplyChain", function (accounts) {
       console.log("before balance",aliceBalanceBefore)
       var bobBalanceBefore = await web3.eth.getBalance(bob);
 
-      await instance.buyItem(0, { from: bob, value: price });
+      await instance.buyItem(0, { from: bob, value: excessAmount });
 
       var aliceBalanceAfter = await web3.eth.getBalance(alice);
       var bobBalanceAfter = await web3.eth.getBalance(bob);
@@ -249,7 +249,7 @@ contract("SupplyChain", function (accounts) {
       var eventEmitted = false;
 
       await instance.addItem(name, price, { from: alice });
-      const tx = await instance.buyItem(0, { from: bob, value: excessAmount });
+      const tx = await instance.buyItem(0, { from: bob, value: price });
 
       if (tx.logs[0].event == "LogSold") {
         eventEmitted = true;
