@@ -206,7 +206,7 @@ contract("SupplyChain", function (accounts) {
       console.log("before balance",aliceBalanceBefore)
       var bobBalanceBefore = await web3.eth.getBalance(bob);
 
-      await instance.buyItem(0, { from: bob, value: excessAmount });
+      await instance.buyItem(0, { from: bob, value: price });
 
       var aliceBalanceAfter = await web3.eth.getBalance(alice);
       var bobBalanceAfter = await web3.eth.getBalance(bob);
@@ -229,7 +229,7 @@ contract("SupplyChain", function (accounts) {
 
       assert.equal(
         Number(aliceBalanceAfter),
-        Number(new BN(aliceBalanceBefore).add(new BN(excessAmount))),
+        Number(new BN(aliceBalanceBefore).add(new BN(price))),
         "alice's balance should be increased by the price of the item",
       );
 
