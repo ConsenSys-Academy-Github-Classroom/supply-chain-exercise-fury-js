@@ -203,14 +203,17 @@ contract("SupplyChain", function (accounts) {
     it("should allow someone to purchase an item and update state accordingly", async () => {
       await instance.addItem(name, price, { from: alice });
       var aliceBalanceBefore = await web3.eth.getBalance(alice);
+      console.log("before balance",aliceBalanceBefore)
       var bobBalanceBefore = await web3.eth.getBalance(bob);
 
       await instance.buyItem(0, { from: bob, value: excessAmount });
 
       var aliceBalanceAfter = await web3.eth.getBalance(alice);
       var bobBalanceAfter = await web3.eth.getBalance(bob);
+      console.log("after balance", aliceBalanceAfter)
 
       const result = await instance.fetchItem.call(0);
+      console.log(result)
 
       assert.equal(
         result[3].toString(10),
@@ -225,8 +228,8 @@ contract("SupplyChain", function (accounts) {
       );
 
       assert.equal(
-        new BN(aliceBalanceAfter).toString(),
-        new BN(aliceBalanceBefore).add(new BN(price)).toString(),
+        Number(aliceBalanceAfter),
+        Number(new BN(aliceBalanceBefore).add(new BN(price))),
         "alice's balance should be increased by the price of the item",
       );
 
