@@ -206,7 +206,7 @@ contract("SupplyChain", function (accounts) {
       console.log("before balance",aliceBalanceBefore)
       var bobBalanceBefore = await web3.eth.getBalance(bob);
 
-      await instance.buyItem(0, { from: bob, value: excessAmount });
+      await instance.buyItem(0, { from: bob, value: price });
 
       var aliceBalanceAfter = await web3.eth.getBalance(alice);
       var bobBalanceAfter = await web3.eth.getBalance(bob);
