@@ -229,7 +229,7 @@ contract("SupplyChain", function (accounts) {
 
       assert.equal(
         Number(aliceBalanceAfter),
-        Number(new BN(aliceBalanceBefore).add(new BN(price))),
+        Number(new BN(aliceBalanceBefore).add(new BN(excessAmount))),
         "alice's balance should be increased by the price of the item",
       );
 
